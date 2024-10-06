@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: my-python-app
+  name: test-service
 spec:
   selector:
-    app: my-python-app
+    app: test
   ports:
   - name: http
     port: 80
