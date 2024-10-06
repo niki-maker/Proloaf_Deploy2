@@ -1,4 +1,4 @@
-name: Deploy to Kind
+name: Load Docker Image into Kind
 
 on:
   push:
@@ -6,27 +6,15 @@ on:
       - main
 
 jobs:
-  deploy:
+  load-image:
     runs-on: self-hosted
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    # Assuming Kind is already installed and the cluster is running locally
-
     - name: Pull Docker Image
       run: docker pull nikita1996rao/proloaf8:latest
 
     - name: Load Docker Image into Kind
       run: kind load docker-image nikita1996rao/proloaf8:latest --name my-cluster
-
-    - name: Deploy to Kubernetes
-      run: |
-        kubectl apply -f deployment.yaml
-        kubectl apply -f service.yaml
-
-    - name: Verify Deployment
-      run: |
-        kubectl get pods
-        kubectl get services
