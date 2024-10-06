@@ -27,7 +27,7 @@ jobs:
 
       - name: Deploy to Kubernetes
         env:
-          KUBECONFIG: ${{ secrets.KUBECONFIG }}
+          KUBECONFIG: Proloaf_Deploy2/kubeconfig
         run: |
           kubectl apply -f deployment.yml
           kubectl apply -f service.yml
