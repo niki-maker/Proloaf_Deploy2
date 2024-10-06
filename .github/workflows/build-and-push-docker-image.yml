@@ -18,11 +18,11 @@ jobs:
 
       - name: Pull Docker image
         run: |
-          docker pull <your-docker-image-name>
+          docker pull nikita1996rao/proloaf10
 
       - name: Load Docker image into Kind cluster
         run: |
-          kind load docker-image <your-docker-image-name>
+          kind load docker-image nikita1996rao/proloaf10
 
       - name: Deploy to Kubernetes
         run: |
@@ -31,5 +31,4 @@ jobs:
 
       - name: Verify deployment
         run: |
-          kind get kubeconfig --internal > kubeconfig
-          kubectl --kubeconfig=kubeconfig get deployments
+          kind get kubeconfig --internal > kubeconfig ⬤
