@@ -29,5 +29,5 @@ jobs:
         env:
           KUBECONFIG: Proloaf_Deploy2/kubeconfig
         run: |
-          kubectl apply -f deployment.yml
-          kubectl apply -f service.yml
+          kubectl apply -f deployment.yaml
+          kubectl apply -f service.yaml
