@@ -9,13 +9,17 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Create Kind cluster
         run: |
           kind create cluster --config kind-config.yaml
-          kind get kubeconfig --internal > kind-kubeconfig.yaml
 
       - name: Deploy to Kubernetes
-        env:
-          KUBECONFIG: ${{ github.workspace }}/kind-kubeconfig.yaml
         run: |
-          kubectl --kubeconfig=$KUBECONFIG apply -f deployment.yaml
+          kind get kubeconfig --internal | kubectl --kubeconfig=- apply -f deployment.yaml
+
+      - name: Verify deployment
+        run: |
+          kind get kubeconfig --internal | kubectl --kubeconfig=- get deployments
