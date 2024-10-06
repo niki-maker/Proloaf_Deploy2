@@ -15,10 +15,12 @@ jobs:
       - name: Create Kind cluster
         run: |
           kind create cluster --name kind-control-plane
+          kind get cluster --name kind-control-plane
 
       - name: Wait for Kind cluster to initialize
         run: |
-          while ! kind get nodes; do sleep 5; done
+          while ! kind get nodes --name kind-control-plane; do sleep 5; done
+          kind get nodes --name kind-control-plane
 
       - name: Pull Docker image
         run: |
@@ -26,12 +28,12 @@ jobs:
 
       - name: Load Docker image into Kind cluster
         run: |
-          kind load docker-image nikita1996rao/proloaf10
+          kind load docker-image --name kind-control-plane nikita1996rao/proloaf10
 
       - name: Deploy to Kubernetes
         run: |
-          kind get kubeconfig --internal | kubectl --kubeconfig=/dev/stdin apply -f deployment.yaml
+          kind get kubeconfig --internal --name kind-control-plane | kubectl --kubeconfig=/dev/stdin apply -f deployment.yaml
 
       - name: Verify deployment
         run: |
-          kind get kubeconfig --internal | kubectl --kubeconfig=/dev/stdin get deployments
+          kind get kubeconfig --internal --name kind-control-plane | kubectl --kubeconfig=/dev/stdin get deployments
