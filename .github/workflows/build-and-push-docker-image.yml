@@ -6,33 +6,20 @@ on:
       - main
 
 jobs:
-  kind:
-    runs-on: ubuntu-latest
+  deploy:
+    runs-on: self-hosted
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    # Remove the Install Kind step if you're running this on a self-hosted runner where Kind is pre-installed
-
-    - name: Create Kind Cluster
-      run: kind create cluster
-
-    - name: Check Disk Space Before Loading Image
-      run: df -h
-
-    - name: Clean Up Docker Environment
-      run: |
-        docker system prune -f
+    # Skip Install Kind and Create Kind Cluster steps since Kind is already running locally
 
     - name: Pull Docker Image
       run: docker pull nikita1996rao/proloaf8:latest
 
     - name: Load Docker Image into Kind
-      run: kind load docker-image nikita1996rao/proloaf8:latest
-
-    - name: Check Disk Space After Loading Image
-      run: df -h
+      run: kind load docker-image nikita1996rao/proloaf8:latest --name my-cluster
 
     - name: Deploy to Kubernetes
       run: |
@@ -43,7 +30,3 @@ jobs:
       run: |
         kubectl get pods
         kubectl get services
-
-    - name: Delete Kind Cluster
-      if: always() # Ensure this step runs even if previous steps fail
-      run: kind delete cluster
