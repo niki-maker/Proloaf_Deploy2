@@ -20,5 +20,5 @@ jobs:
 
       - name: Build and push image
         run: |
-          docker build -t my-docker-hub-account/my-image .
-          docker push my-docker-hub-account/my-image
+          docker build -t nikita1996rao/proloaf8 .
+          docker push nikita1996rao/proloaf8
