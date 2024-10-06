@@ -29,5 +29,5 @@ jobs:
         env:
           KUBECONFIG: ${{ github.workspace }}/kind-kubeconfig.yaml
         run: |
-          kubectl --kubeconfig=$KUBECONFIG --server=172.18.0.2:6443 apply -f deployment.yaml
+          kubectl --kubeconfig=$KUBECONFIG --server=172.18.0.2:6443 --insecure-skip-tls-verify apply -f deployment.yaml
           kubectl --kubeconfig=$KUBECONFIG --server=172.18.0.2:6443 apply -f service.yaml
