@@ -1,6 +1,6 @@
 import sys
 import os
-local_proloaf_path = 'Proloaf Working/src'
+local_proloaf_path = 'src'
 sys.path.insert(0, local_proloaf_path)
 
 # Check that proloaf directory exists
