@@ -27,7 +27,7 @@ jobs:
 
       - name: Deploy to Kubernetes
         env:
-          KUBECONFIG: Proloaf_Deploy2/kubeconfig
+          KUBECONFIG: ${{ github.workspace }}/kubeconfig
         run: |
-          kubectl apply -f deployment.yaml
-          kubectl apply -f service.yaml
+          kubectl --server=https://kubernetes.docker.internal:6443 --kubeconfig=$KUBECONFIG apply -f deployment.yaml
+          kubectl --server=https://kubernetes.docker.internal:6443 --kubeconfig=$KUBECONFIG apply -f service.yaml
