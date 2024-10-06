@@ -31,4 +31,4 @@ jobs:
 
       - name: Verify deployment
         run: |
-          kind get kubeconfig --internal > kubeconfig ⬤
+          kind get kubeconfig --internal > kubeconfig
