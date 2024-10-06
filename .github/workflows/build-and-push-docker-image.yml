@@ -29,5 +29,5 @@ jobs:
         env:
           KUBECONFIG: ${{ github.workspace }}/kubeconfig
         run: |
-          kubectl --server=https://kubernetes.docker.internal:6443 --kubeconfig=$KUBECONFIG apply -f deployment.yaml
-          kubectl --server=https://kubernetes.docker.internal:6443 --kubeconfig=$KUBECONFIG apply -f service.yaml
+          kubectl --kubeconfig=$KUBECONFIG --validate=false apply -f deployment.yaml
+          kubectl --kubeconfig=$KUBECONFIG --validate=false apply -f service.yaml
