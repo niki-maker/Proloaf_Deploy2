@@ -13,7 +13,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    # Skip Install Kind and Create Kind Cluster steps since Kind is already running locally
+    # Assuming Kind is already installed and the cluster is running locally
 
     - name: Pull Docker Image
       run: docker pull nikita1996rao/proloaf8:latest
