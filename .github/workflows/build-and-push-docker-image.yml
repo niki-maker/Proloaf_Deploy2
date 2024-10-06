@@ -14,14 +14,22 @@ jobs:
 
       - name: Create Kind cluster
         run: |
-          kind create cluster
+          kind create cluster --host kind-control-plane.local
+
+      - name: Pull Docker image
+        run: |
+          docker pull <your-docker-image-name>
+
+      - name: Load Docker image into Kind cluster
+        run: |
+          kind load docker-image <your-docker-image-name>
 
       - name: Deploy to Kubernetes
         run: |
           kind get kubeconfig --internal > kubeconfig
-          kubectl --kubeconfig=kubeconfig --validate=false --insecure-skip-tls-verify apply -f deployment.yaml
+          kubectl --kubeconfig=kubeconfig apply -f deployment.yaml
 
       - name: Verify deployment
         run: |
           kind get kubeconfig --internal > kubeconfig
-          kubectl --kubeconfig=kubeconfig --insecure-skip-tls-verify get deployments
+          kubectl --kubeconfig=kubeconfig get deployments
