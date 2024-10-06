@@ -1,33 +1,19 @@
-name: Deploy to Kubernetes
-
-on:
-  push:
-    branches:
-      - main
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          push: true
-          tags: nikita1996rao/proloaf10:latest
-
-      - name: Deploy to Kubernetes
-        uses: kubernetes/deploy-action@v1
-        with:
-          cluster: ${{ secrets.KUBECONFIG }}
-          deployment: test-deployment
-          image: nikita1996rao/proloaf10:latest
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: test
+  template:
+    metadata:
+      labels:
+        app: test
+    spec:
+      containers:
+      - name: test
+        image: nikita1996rao/proloaf10:latest
+        ports:
+        - containerPort: 80
