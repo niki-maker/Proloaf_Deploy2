@@ -16,6 +16,10 @@ jobs:
         run: |
           kind create cluster --name kind-control-plane
 
+      - name: Wait for Kind cluster to initialize
+        run: |
+          kind get nodes --wait=60s
+
       - name: Pull Docker image
         run: |
           docker pull nikita1996rao/proloaf10
@@ -26,10 +30,8 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
-          kind get kubeconfig --internal > kubeconfig
-          kubectl --kubeconfig=kubeconfig apply -f deployment.yaml
+          kind get kubeconfig --internal | kubectl --kubeconfig=/dev/stdin apply -f deployment.yaml
 
       - name: Verify deployment
         run: |
-          kind get kubeconfig --internal > kubeconfig
-          kubectl --kubeconfig=kubeconfig get deployments
+          kind get kubeconfig --internal | kubectl --kubeconfig=/dev/stdin get deployments
