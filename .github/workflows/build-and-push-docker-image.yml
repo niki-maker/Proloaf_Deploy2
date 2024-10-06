@@ -27,7 +27,7 @@ jobs:
 
       - name: Deploy to Kubernetes
         env:
-          KUBECONFIG: ${{ github.workspace }}/kubeconfig
+          KUBECONFIG: ${{ github.workspace }}/kind-kubeconfig.yaml
         run: |
-          kubectl --kubeconfig=$KUBECONFIG --validate=false apply -f deployment.yaml
-          kubectl --kubeconfig=$KUBECONFIG --validate=false apply -f service.yaml
+          kubectl --kubeconfig=$KUBECONFIG apply -f deployment.yaml
+          kubectl --kubeconfig=$KUBECONFIG apply -f service.yaml
