@@ -1,4 +1,4 @@
-name: Load Docker Image into Kind
+name: Docker Image Deployment
 
 on:
   push:
@@ -6,27 +6,20 @@ on:
       - main
 
 jobs:
-  load-image:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up Docker
-      uses: docker/setup-buildx-action@v2
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Install Kind
-      run: |
-        curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
-        chmod +x ./kind
-        sudo mv ./kind /usr/local/bin/kind
-
-    - name: Create Kind Cluster
-      run: kind create cluster --name my-cluster
-
-    - name: Pull Docker Image
-      run: docker pull nikita1996rao/proloaf8:latest
-
-    - name: Load Docker Image into Kind
-      run: kind load docker-image nikita1996rao/proloaf8:latest --name my-cluster
+      - name: Build and push Docker image
+        run: |
+          docker build -t my-docker-image .
+          docker tag my-docker-image ${{ secrets.DOCKER_USERNAME }}/my-docker-image:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/my-docker-image:latest
