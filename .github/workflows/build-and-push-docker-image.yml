@@ -22,6 +22,9 @@ jobs:
     - name: Create Kind Cluster
       run: kind create cluster
 
+    - name: Check Disk Space Before Loading Image
+      run: df -h
+
     - name: Clean Up Docker Environment
       run: |
         docker system prune -f
@@ -31,6 +34,9 @@ jobs:
 
     - name: Load Docker Image into Kind
       run: kind load docker-image nikita1996rao/proloaf8:latest
+
+    - name: Check Disk Space After Loading Image
+      run: df -h
 
     - name: Deploy to Kubernetes
       run: |
