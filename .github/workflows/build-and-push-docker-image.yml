@@ -26,8 +26,8 @@ jobs:
           tags: nikita1996rao/proloaf10:latest
 
       - name: Deploy to Kubernetes
-        uses: kubernetes/deploy@v1
-        with:
-          cluster: ${{ secrets.KUBECONFIG }}
-          deployment: test-deployment
-          image: nikita1996rao/proloaf10:latest
+        env:
+          KUBECONFIG: ${{ secrets.KUBECONFIG }}
+        run: |
+          kubectl apply -f deployment.yml
+          kubectl apply -f service.yml
