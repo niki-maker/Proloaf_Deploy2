@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: my-python-app
-        image: nikita1996rao/proloaf9:latest
+        image: nikita1996rao/proloaf10:latest
         ports:
         - containerPort: 80
