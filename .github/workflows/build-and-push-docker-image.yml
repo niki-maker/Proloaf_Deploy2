@@ -1,4 +1,4 @@
-name: Build and Push Docker Image
+name: Deploy to Kind
 
 on:
   push:
@@ -6,19 +6,39 @@ on:
       - main
 
 jobs:
-  build-and-push:
+  kind:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Set up Docker
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y docker.io
 
-      - name: Build and push image
-        run: |
-          docker build -t nikita1996rao/proloaf8 .
-          docker push nikita1996rao/proloaf8
+    - name: Install Kind
+      run: |
+        curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.17.0/kind-linux-amd64
+        chmod +x ./kind
+        sudo mv ./kind /usr/local/bin/kind
+
+    - name: Create Kind Cluster
+      run: kind create cluster
+
+    - name: Pull Docker Image
+      run: docker pull nikita1996rao/proloaf8:latest
+
+    - name: Load Docker Image into Kind
+      run: kind load docker-image nikita1996rao/proloaf8:latest
+
+    - name: Deploy to Kubernetes
+      run: |
+        kubectl apply -f deployment.yaml
+        kubectl apply -f service.yaml
+
+    - name: Verify Deployment
+      run: |
+        kubectl get pods
+        kubectl get services
