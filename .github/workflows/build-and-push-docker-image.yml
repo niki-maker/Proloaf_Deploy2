@@ -20,6 +20,6 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t my-docker-image .
-          docker tag my-docker-image ${{ secrets.DOCKER_USERNAME }}/proloaf9:latest
+          docker build -t proloaf9:latest .
+          docker tag proloaf9:latest ${{ secrets.DOCKER_USERNAME }}/proloaf9:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/proloaf9:latest
