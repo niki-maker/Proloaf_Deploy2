@@ -13,16 +13,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Remove Conflicting Packages
-      run: |
-        sudo apt-get remove -y containerd containerd.io
-        sudo apt-get autoremove -y
-
-    - name: Install Docker Using Official Script
-      run: |
-        curl -fsSL https://get.docker.com -o get-docker.sh
-        sudo sh get-docker.sh
-
     - name: Install Kind
       run: |
         curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.17.0/kind-linux-amd64
