@@ -19,9 +19,9 @@ jobs:
       - name: Deploy to Kubernetes
         run: |
           kind get kubeconfig --internal > kubeconfig
-          kubectl --kubeconfig=kubeconfig apply -f deployment.yaml
+          kubectl --kubeconfig=kubeconfig --validate=false --insecure-skip-tls-verify apply -f deployment.yaml
 
       - name: Verify deployment
         run: |
           kind get kubeconfig --internal > kubeconfig
-          kubectl --kubeconfig=kubeconfig get deployments
+          kubectl --kubeconfig=kubeconfig --insecure-skip-tls-verify get deployments
