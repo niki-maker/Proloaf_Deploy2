@@ -13,14 +13,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Remove Conflicting Packages
+    - name: Set up Docker
       run: |
-        sudo apt-get remove -y containerd
-
-    - name: Install Docker Using Official Script
-      run: |
-        curl -fsSL https://get.docker.com -o get-docker.sh
-        sudo sh get-docker.sh
+        sudo apt-get update
+        sudo apt-get install -y docker.io
 
     - name: Install Kind
       run: |
@@ -30,6 +26,10 @@ jobs:
 
     - name: Create Kind Cluster
       run: kind create cluster
+
+    - name: Clean Up Docker Environment
+      run: |
+        docker system prune -f
 
     - name: Pull Docker Image
       run: docker pull nikita1996rao/proloaf8:latest
