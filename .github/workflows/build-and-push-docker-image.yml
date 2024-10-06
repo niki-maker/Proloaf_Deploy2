@@ -18,8 +18,10 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
-          kind get kubeconfig --internal | kubectl --kubeconfig=- apply -f deployment.yaml
+          kind get kubeconfig --internal > kubeconfig
+          kubectl --kubeconfig=kubeconfig apply -f deployment.yaml
 
       - name: Verify deployment
         run: |
-          kind get kubeconfig --internal | kubectl --kubeconfig=- get deployments
+          kind get kubeconfig --internal > kubeconfig
+          kubectl --kubeconfig=kubeconfig get deployments
